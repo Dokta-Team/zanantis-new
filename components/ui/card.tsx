@@ -1,92 +1,65 @@
-import * as React from "react"
+import clsx from "clsx";
+import type { ReactNode } from "react";
 
-import { cn } from "@/lib/utils"
-
-function Card({ className, ...props }: React.ComponentProps<"div">) {
+export function Card({
+  className,
+  padded = true,
+  children,
+}: {
+  className?: string;
+  padded?: boolean;
+  children: ReactNode;
+}) {
   return (
-    <div
-      data-slot="card"
-      className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
-        className
-      )}
-      {...props}
-    />
-  )
+    <div className={clsx("rounded-lg border border-ink-200 bg-white shadow-sm", padded && "p-6", className)}>
+      {children}
+    </div>
+  );
 }
 
-function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
+export function FeatureCard({
+  icon,
+  iconBg = "bg-zan-blue",
+  title,
+  description,
+}: {
+  icon: ReactNode;
+  iconBg?: string;
+  title: string;
+  description: string;
+}) {
   return (
-    <div
-      data-slot="card-header"
-      className={cn(
-        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6",
-        className
-      )}
-      {...props}
-    />
-  )
+    <Card>
+      <div
+        className={clsx(
+          "mb-4 flex h-[46px] w-[46px] items-center justify-center rounded-[13px] text-white",
+          iconBg
+        )}
+        aria-hidden="true"
+      >
+        {icon}
+      </div>
+      <h4 className="mb-[7px] text-lg">{title}</h4>
+      <p className="text-[14.5px] text-ink-600">{description}</p>
+    </Card>
+  );
 }
 
-function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
+export function StatCard({
+  value,
+  label,
+  colorClassName = "text-primary-400",
+}: {
+  value: ReactNode;
+  label: string;
+  colorClassName?: string;
+}) {
   return (
-    <div
-      data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
-      {...props}
-    />
-  )
-}
-
-function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-description"
-      className={cn("text-muted-foreground text-sm", className)}
-      {...props}
-    />
-  )
-}
-
-function CardAction({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-action"
-      className={cn(
-        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-function CardContent({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-content"
-      className={cn("px-6", className)}
-      {...props}
-    />
-  )
-}
-
-function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-footer"
-      className={cn("flex items-center px-6 [.border-t]:pt-6", className)}
-      {...props}
-    />
-  )
-}
-
-export {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardAction,
-  CardDescription,
-  CardContent,
+    <Card>
+      <div className={clsx("font-display text-[40px] font-bold leading-none tracking-tight", colorClassName)}>
+        {value}
+      </div>
+      <div className="mt-2 text-sm text-ink-600">{label}</div>
+    </Card>
+  );
 }
